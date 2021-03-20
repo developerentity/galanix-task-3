@@ -1,6 +1,6 @@
 .main-container {
     margin     : 0 auto;
-    width      : 600px;
+    /* width      : 1000px; */
     height     : 100vh;
     display    : flex;
     align-items: center;

@@ -1,48 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 
 const Table = () => {
 
-    const [data, setData] = useState({})
+    const universities = useSelector(state => state.universities)
 
-    useEffect(() => {
-        fetch("http://universities.hipolabs.com/search?name=middle&country=Kuwait")
-            .then(data => data.json())
-            .then(obj => setData(obj[0]))
-
-            .catch(err => console.error(err))
-    }, [])
-
-    const keysArr = Object.keys(data)
-
-    const tableRowList = keysArr?.map((item, index) => {
-        if (data[item]) {
-            return <tr key={item.toString()}>
+    const tableRowList = universities.map((item, index) => {
+        return (
+            <tr key={item.name.toString()}>
                 <th scope="row">{index + 1}</th>
-                <th>{item}</th>
-                <td>
-                    {typeof data[item] !== 'string'
-                        ? data[item]?.map(j => {
-                            return item === "web_pages"
-                                ? <a key={j.toString()} href={j}>{j + ' '}</a>
-                                : <p key={j.toString()} className="m-0">{j + ' '}</p>
-                        })
-                        : data[item]}
-                </td>
+                <td>{item.name}</td>
+                <td><a href={item.web_pages[0]}>{item.web_pages[0]}</a></td>
+                <td>{item.domains[0]}</td>
+                <td>{item.country}</td>
+                <td>{item.alpha_two_code}</td>
             </tr>
-        }
-        return null
+        )
     })
 
-    return (
-        <section className="content">
-            <table className="table table-dark table-hover mb-0">
-                <tbody>
-                    {tableRowList}
-                </tbody>
-            </table>
-        </section>
-    )
+    if (universities.length) {
+        return (
+            <section className="content">
+                <table className="table table-dark table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">N</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Web pages</th>
+                            <th scope="col">Domains</th>
+                            <th scope="col">Country</th>
+                            <th scope="col">Alpha two code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {tableRowList}
+                    </tbody>
+                </table>
+            </section>
+        )
+    } else {
+        return null
+    }
 }
 
 export default Table
