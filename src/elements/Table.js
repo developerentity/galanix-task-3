@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import TableRow from './TableRow'
 
 
 const Table = () => {
@@ -7,16 +8,7 @@ const Table = () => {
     const universities = useSelector(state => state.universities)
 
     const tableRowList = universities.map((item, index) => {
-        return (
-            <tr key={item.name.toString()}>
-                <th scope="row">{index + 1}</th>
-                <td>{item.name}</td>
-                <td><a href={item.web_pages[0]}>{item.web_pages[0]}</a></td>
-                <td>{item.domains[0]}</td>
-                <td>{item.country}</td>
-                <td>{item.alpha_two_code}</td>
-            </tr>
-        )
+        return <TableRow item={item} index={index} key={item.name.toString()} />
     })
 
     if (universities.length) {
@@ -31,6 +23,7 @@ const Table = () => {
                             <th scope="col">Domains</th>
                             <th scope="col">Country</th>
                             <th scope="col">Alpha two code</th>
+                            <th scope="col">Is saved</th>
                         </tr>
                     </thead>
                     <tbody>
