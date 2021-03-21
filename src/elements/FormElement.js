@@ -22,14 +22,14 @@ const FormElement = () => {
     return (
         <form onSubmit={handleSubmit}>
             <label>Enter country</label>
-            <div className="input-group mb-3">
+            <div className="input-group">
                 <input
                     onChange={(e) => setVal(e.target.value)}
                     value={val}
                     className="form-control"
                     type="text" />
             </div>
-            <div className="header__btn-row">
+            <div className="header__btn-row pt-3">
                 <input
                     onClick={reset}
                     type="reset"
