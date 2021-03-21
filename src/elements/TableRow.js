@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 
-const TableRow = ({ item, index }) => {
+const TableRow = ({ item, index, saved, add, remove }) => {
 
-    const [val, setVal] = useState(false)
-
-    useEffect(() => {
-        console.log(val)
-    }, [val])
+    let checkBoxValue = !!saved.find(uni => uni.name === item.name)
 
     return (
         <tr>
@@ -20,8 +16,12 @@ const TableRow = ({ item, index }) => {
             <td>
                 <div className="form-check">
                     <input
-                        onChange={() => setVal(!val)}
-                        value={val}
+                        onChange={() => {
+                            checkBoxValue
+                                ? remove(item.name)
+                                : add(item)
+                        }}
+                        checked={checkBoxValue}
                         className="form-check-input"
                         type="checkbox" />
                 </div>

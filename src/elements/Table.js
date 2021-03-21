@@ -1,14 +1,48 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { addToSaved, removeFromSaved, setSaved, setUniversities } from '../redux/universitiesReducer'
+import { localStorageHelper } from '../util/localStorageHelper'
 import TableRow from './TableRow'
 
 
 const Table = () => {
 
+    const dispatch = useDispatch()
+
     const universities = useSelector(state => state.universities)
+    const saved = useSelector(state => state.saved)
+
+    const add = uni => dispatch(addToSaved(uni))
+    const remove = name => dispatch(removeFromSaved(name))
+
+    useEffect(() => {
+        if (localStorageHelper.getLocalData('uni_saved_arr')) {
+            dispatch(setSaved(localStorageHelper.getLocalData('uni_saved_arr')))
+        }
+    }, [dispatch])
+
+    useEffect(() => {
+        localStorageHelper.setLocalData('uni_saved_arr', saved)
+    }, [saved])
+
+    useEffect(() => {
+        if (localStorageHelper.getLocalData('uni_entered_arr')) {
+            dispatch(setUniversities(localStorageHelper.getLocalData('uni_entered_arr')))
+        }
+    }, [dispatch])
+
+    useEffect(() => {
+        localStorageHelper.setLocalData('uni_entered_arr', universities)
+    }, [universities])
 
     const tableRowList = universities.map((item, index) => {
-        return <TableRow item={item} index={index} key={item.name.toString()} />
+        return <TableRow
+            key={item.name.toString()}
+            item={item}
+            index={index}
+            saved={saved}
+            add={add}
+            remove={remove} />
     })
 
     if (universities.length) {
